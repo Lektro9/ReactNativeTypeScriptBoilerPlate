@@ -10,6 +10,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import {
   SafeAreaView,
   StyleSheet,
@@ -27,43 +28,25 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Home from './screens/Home';
+import Category from './screens/Category';
 
-declare const global: { HermesInternal: null | {} };
 
-function generateColor(): string {
-  return Math.floor(Math.random() * 16777215).toString(16);
-}
-
-const colorMap: any = {};
-
-const testData = Array.from(Array(200), (_, i) => {
-  colorMap[i] = generateColor();
-  return i;
-});
+const RootStack = createStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <View style={styles.container}>
-        <FlatList
-          numColumns={2}
-          style={styles.list}
-          data={testData}
-          keyExtractor={(item) => '' + item}
-          renderItem={({ item }) => (
-            <View
-              style={[
-                styles.dragBox,
-                { backgroundColor: '#' + colorMap[item] },
-              ]}>
-              <View>
-                <Text style={styles.dragHandler}>@</Text>
-              </View>
-              <Text style={styles.textBox}>{item}</Text>
-            </View>
-          )}
+      <RootStack.Navigator >
+        <RootStack.Screen
+          name="Home"
+          component={Home}
         />
-      </View>
+        <RootStack.Screen
+          name="Category"
+          component={Category}
+        />
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };
