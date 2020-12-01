@@ -11,43 +11,28 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  FlatList,
-} from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { StyleSheet } from 'react-native';
 import Home from './screens/Home';
 import Category from './screens/Category';
-
+import { SWRConfig } from 'swr';
 
 const RootStack = createStackNavigator();
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <RootStack.Navigator >
-        <RootStack.Screen
-          name="Home"
-          component={Home}
-        />
-        <RootStack.Screen
-          name="Category"
-          component={Category}
-        />
-      </RootStack.Navigator>
-    </NavigationContainer>
+    <SWRConfig value={fetcher}>
+      <NavigationContainer>
+        <RootStack.Navigator>
+          <RootStack.Screen name="Home" component={Home} />
+          <RootStack.Screen
+            name="Category"
+            component={Category}
+            options={({ route }) => ({ title: route.params.item })}
+          />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </SWRConfig>
   );
 };
 
