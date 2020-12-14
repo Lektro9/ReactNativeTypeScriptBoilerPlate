@@ -3,8 +3,16 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import FlipCard from 'react-native-flip-card';
 import getCards from '../hooks/getCards';
+import { RouteProp } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 
-const Category = ({ route }) => {
+type RootStackParamList = {
+  Home: undefined;
+  Category: { item: string };
+};
+type CatProps = StackScreenProps<RootStackParamList, 'Category'>;
+
+const Category = ({ route }: CatProps) => {
   const myCards = getCards();
   const category = route.params.item;
   console.log(category);
@@ -13,15 +21,12 @@ const Category = ({ route }) => {
       {myCards.isLoading && <Text>Loading...</Text>}
       {myCards.cards && (
         <FlatList
-          data={myCards.cards.filter((c) => c.karten_thema === category)}
+          data={myCards.cards.filter((c: any) => c.karten_thema === category)}
           keyExtractor={(item) => '' + item.id}
           renderItem={({ item }) => (
             <View style={{ height: '10%', margin: 10, flex: 1 }}>
               <FlipCard
                 style={{ marginBottom: 10, flex: 1 }}
-                friction={3}
-                perspective={1000}
-                flipHorizontal={true}
                 alignHeight={true}>
                 {/* Face Side */}
                 <View style={styles.face}>

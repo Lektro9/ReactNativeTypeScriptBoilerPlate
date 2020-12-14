@@ -16,10 +16,17 @@ import Home from './screens/Home';
 import Category from './screens/Category';
 import { SWRConfig } from 'swr';
 
-const RootStack = createStackNavigator();
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json());
 
-const App = () => {
+type RootStackParamList = {
+  Home: undefined;
+  Category: { item: string };
+};
+const RootStack = createStackNavigator<RootStackParamList>();
+
+interface AppProps {}
+
+const App: AppProps = () => {
   return (
     <SWRConfig value={fetcher}>
       <NavigationContainer>
